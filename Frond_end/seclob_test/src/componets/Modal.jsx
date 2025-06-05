@@ -3,7 +3,7 @@ import React from "react";
 
 const Modal = ({ show, title, children, onClose }) => {
   if (!show) return null;
-
+ const modalWidth = title === "Add Product" ? "900px" : "400px";
   return (
     <div
       style={{
@@ -25,7 +25,8 @@ const Modal = ({ show, title, children, onClose }) => {
         style={{
           background: "#fff",
           borderRadius: "8px",
-          width: "400px",
+          width: modalWidth,
+          
           maxWidth: "90%",
           padding: "24px",
           boxSizing: "border-box",

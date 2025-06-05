@@ -15,9 +15,10 @@ app.use("/api/auth", require("./routes/authRoutes"));
 
 app.use("/api/categories", require("./routes/categoryRoutes"));
 app.use("/api/subcategories", require("./routes/subCategoryRoutes"));
-// app.use("/api/products", require("./routes/productRoutes"));
-// app.use("/api/wishlist", require("./routes/wishlistRoutes"));
-
+app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/wishlist", require("./routes/wishlistRoutes"));
+app.use("/api/upload", require("./controllers/uploadController"));
+app.use("/uploads", express.static("uploads"));
 const PORT = process.env.PORT || 5000;
 // Function to create default admin
 const createDefaultAdmin = async () => {

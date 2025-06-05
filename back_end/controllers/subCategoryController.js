@@ -29,30 +29,44 @@ exports.createSubCategory = async (req, res) => {
 };
 
 // Get all subcategories
+// exports.getsubcategories = async (req, res) => {
+//     try {
+//       const categories = await Category.find().lean(); // Use lean for better performance
+//       if (!categories || categories.length === 0) {
+//         return res.status(404).json({ msg: "No categories found" });
+//       }
+  
+//       // Fetch all subcategories
+//       const subcategories = await SubCategory.find().lean();
+  
+//       // Map subcategories to categories
+//       const categoriesWithSubCategories = categories.map((category) => ({
+//         ...category,
+//         subcategories: subcategories.filter(
+//           (sub) => sub.category.toString() === category._id.toString()
+//         ),
+//       }));
+  
+//       res.json(categoriesWithSubCategories);
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send("Server error");
+//     }
+//   };
 exports.getsubcategories = async (req, res) => {
-    try {
-      const categories = await Category.find().lean(); // Use lean for better performance
-      if (!categories || categories.length === 0) {
-        return res.status(404).json({ msg: "No categories found" });
-      }
-  
-      // Fetch all subcategories
-      const subcategories = await SubCategory.find().lean();
-  
-      // Map subcategories to categories
-      const categoriesWithSubCategories = categories.map((category) => ({
-        ...category,
-        subcategories: subcategories.filter(
-          (sub) => sub.category.toString() === category._id.toString()
-        ),
-      }));
-  
-      res.json(categoriesWithSubCategories);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
+  try {
+    const subcategories = await SubCategory.find().populate("category").lean(); // Optional: populate category info
+
+    if (!subcategories || subcategories.length === 0) {
+      return res.status(404).json({ msg: "No subcategories found" });
     }
-  };
+
+    res.status(200).json(subcategories);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
 
 // Get single subcategory by ID
 exports.getSubCategoryById = async (req, res) => {

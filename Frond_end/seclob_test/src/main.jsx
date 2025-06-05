@@ -17,13 +17,15 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import NotFound from "@/pages/404";
 import Register from "@/pages/Auth/Register";
 import Login from "./pages/Auth/Login";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '@fontsource/montserrat/400.css'; 
-import '@fontsource/montserrat/600.css'; 
-import '@fontsource/montserrat/700.css'; 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/600.css";
+import "@fontsource/montserrat/700.css";
 import { Toaster } from "react-hot-toast";
 import PublicRoute from "./utils/PublicRoute";
+import { ProductProvider } from "./context/ProductContext";
+import ProductDetails from "./pages/Products/Productdetails";
 const router = createBrowserRouter([
   {
     path: PATHS.LOGIN,
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
       </PublicRoute>
     ),
   },
- 
+
   {
     path: "*",
     element: <NotFound />,
@@ -60,36 +62,25 @@ const router = createBrowserRouter([
         element: <ProtectedRoute component={ProductList} />,
       },
       {
-        path: PATHS.ADD_PRODUCT,
-        element: <ProtectedRoute component={AddProduct} />,
+        path: `${PATHS.PRODUCTSDETAILS}/:id`,
+        element: <ProtectedRoute component={ProductDetails} />,
       },
-      {
-        path: PATHS.EDIT_PRODUCT,
-        element: <ProtectedRoute component={AddProduct} />,
-      },
-      {
-        path: PATHS.CATEGORIES,
-        element: <ProtectedRoute component={() => <div>Categories</div>} />,
-      },
+
       {
         path: PATHS.WISHLIST,
         element: <ProtectedRoute component={() => <div>Wishlist</div>} />,
-      },
-      {
-        path: PATHS.SETTINGS,
-        element: <ProtectedRoute component={() => <div>Settings</div>} />,
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
- 
-    <ReactQueryClientProvider>
-      <AuthProvider>
+  <ReactQueryClientProvider>
+    <AuthProvider>
+      <ProductProvider>
         <RouterProvider router={router} />
         <Toaster position="top-right" />
-      </AuthProvider>
-    </ReactQueryClientProvider>
- 
+      </ProductProvider>
+    </AuthProvider>
+  </ReactQueryClientProvider>
 );
