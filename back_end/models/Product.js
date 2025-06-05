@@ -1,17 +1,51 @@
 const mongoose = require("mongoose");
 
 const variantSchema = new mongoose.Schema({
-  ram: String,
-  price: Number,
-  qty: Number,
+  ram: {
+    type: String,
+    required: true,
+  },
+ 
+  price: {
+    type: Number,
+    required: true,
+  },
+  qty: {
+    type: Number,
+    required: true,
+  },
 });
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: String,
-  category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-  subcategory: { type: mongoose.Schema.Types.ObjectId, ref: "SubCategory" },
-  variants: [variantSchema],
-  images: [String],
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+ 
+  subcategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "SubCategory",
+    required: true,
+  },
+  variants: {
+    type: [variantSchema],
+    required: true,
+  },
+  images: {
+    type: [String], // URLs or base64 strings
+    required: true,
+    validate: [arrayLimit, "{PATH} must have at least 3 images"],
+  },
 });
+
+// Validator for minimum 3 images
+function arrayLimit(val) {
+  return val.length >= 3;
+}
+
 module.exports = mongoose.model("Product", productSchema);

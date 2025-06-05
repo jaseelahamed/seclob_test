@@ -24,6 +24,7 @@ import '@fontsource/montserrat/600.css';
 import '@fontsource/montserrat/700.css'; 
 import { Toaster } from "react-hot-toast";
 import PublicRoute from "./utils/PublicRoute";
+import { ProductProvider } from "./context/ProductContext";
 const router = createBrowserRouter([
   {
     path: PATHS.LOGIN,
@@ -86,9 +87,12 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
  
     <ReactQueryClientProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ProductProvider>
         <RouterProvider router={router} />
         <Toaster position="top-right" />
+      </ProductProvider>
+        
       </AuthProvider>
     </ReactQueryClientProvider>
  

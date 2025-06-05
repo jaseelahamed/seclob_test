@@ -6,4 +6,5 @@ export const URLS = {
     CATEGORIES: "/categories",
     SUBCATEGORIES: "/subcategories",
     WISHLIST: "/wishlist",
+    Upload: "/upload/images",
   };
