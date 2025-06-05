@@ -16,8 +16,8 @@ const Dashboard = () => {
   const [modalType, setModalType] = useState(null);
 
 
-  const { data: categoryData, isLoading, isFetching, isError, error } = useFetchData(
-    "classes",
+  const { data: categoryData, isLoading, refetch,  isFetching, isError, error } = useFetchData(
+    "category",
     getCategories, 
     null,
     null
@@ -133,6 +133,7 @@ console.log(categoryData,"categoryDatacategoryDatacategoryDatacategoryData")
     mutationFn: (values) => addCategory(values),
     onSuccess: () => {
       toast.success("Category added successfully");
+      refetch()
       handleClose();
     },
     onError: (error) => {
@@ -143,6 +144,7 @@ console.log(categoryData,"categoryDatacategoryDatacategoryDatacategoryData")
     mutationFn: (values) => addSubCategory(values),
     onSuccess: () => {
       toast.success("Category added successfully");
+refetch()
       handleClose();
     },
     onError: (error) => {
