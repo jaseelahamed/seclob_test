@@ -25,6 +25,7 @@ import useFetchData from "../../hooks/use-fetch-data";
 import { useProductContext } from "../../context/ProductContext";
 import ProductCard from "../../componets/ProductCard";
 import { apiCall } from "../../services/apiCall";
+import Pagination from "../../componets/Pagination ";
 const Dashboard = () => {
   const {
     products: PtoductList,
@@ -35,8 +36,7 @@ const Dashboard = () => {
     setFilters,
   } = useProductContext();
   console.log(PtoductList, "PtoductListPtoductListPtoductList");
-  // if (loading) return <div>Loading products...</div>;
-  // if (producterror) return <div>Error fetching products</div>;
+
   const [modalType, setModalType] = useState(null);
 
   const {
@@ -55,8 +55,7 @@ const Dashboard = () => {
     // isError,
     // error,
   } = useFetchData("subcategory", getSUbCategories, null, null);
-  console.log(categoryData, "categoryDatacategoryDatacategoryDatacategoryData");
-  // null | "category" | "subcategory" | "product"
+
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -67,7 +66,7 @@ const Dashboard = () => {
 
   const addProductMutation = useMutation({
     mutationFn: (values) => {
-      // Optional: remove empty fields before sending
+     
       const trimmedValues = {
         ...values,
         variants: values.variants.map((v) => ({
@@ -99,7 +98,6 @@ const Dashboard = () => {
   });
 
   const handleSubmit = (values) => {
-    console.log(values, "8888888888888888888888888888888888888888888888888");
     addProductMutation.mutate(values);
   };
 
@@ -113,12 +111,7 @@ const Dashboard = () => {
     }));
   };
 
-  const handleRemoveVariant = (index) => {
-    setFormValues((prev) => {
-      const newVariants = prev.variants.filter((_, i) => i !== index);
-      return { ...prev, variants: newVariants };
-    });
-  };
+ 
   const handleClose = () => {
     setModalType(null);
     // Optionally reset form:
@@ -136,12 +129,11 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  // Sample categories array (uses `name`, not `category`)
-
+  
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
-  // (Optional) Example handler—adjust as needed
+
   const handleCategoryClick = (subcategory) => {
     if (selectedCategory?._id === subcategory._id) {
       setSelectedCategory(null);
@@ -161,7 +153,7 @@ const Dashboard = () => {
       }));
     }
     console.log("Clicked subcategory:", subcategory);
-    // any additional logic before navigation
+
   };
 
   const addCategoryMutation = useMutation({
@@ -321,11 +313,11 @@ const Dashboard = () => {
                 fontSize: "16.09px",
                 lineHeight: "100%",
                 letterSpacing: "0%",
-                
+
                 color: "#222222",
-                cursor:"pointer",
-             
-                padding: "8px 12px", 
+                cursor: "pointer",
+
+                padding: "8px 12px",
               }}
               onClick={() =>
                 setFilters((prev) => ({
@@ -515,7 +507,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
+      <Pagination />
       {/* ===== Dynamic Modal ===== */}
       <Modal
         show={modalType !== null}
