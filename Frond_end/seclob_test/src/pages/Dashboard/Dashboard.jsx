@@ -12,7 +12,13 @@ import {
   SubCategoryValidationSchema,
 } from "../../utils/ValidationSchema";
 import { toast } from "react-hot-toast";
-import { addCategory, addProduct, addSubCategory, getCategories } from "./category-api";
+import {
+  addCategory,
+  addProduct,
+  addSubCategory,
+  getCategories,
+  getSUbCategories,
+} from "./category-api";
 import { useMutation } from "@tanstack/react-query";
 
 import useFetchData from "../../hooks/use-fetch-data";
@@ -20,18 +26,17 @@ import { useProductContext } from "../../context/ProductContext";
 import ProductCard from "../../componets/ProductCard";
 import { apiCall } from "../../services/apiCall";
 const Dashboard = () => {
-
-
   const {
     products: PtoductList,
     loading,
     error: producterror,
     filters,
+    refetch: refetchProduct,
     setFilters,
   } = useProductContext();
   console.log(PtoductList, "PtoductListPtoductListPtoductList");
-  if (loading) return <div>Loading products...</div>;
-  if (producterror) return <div>Error fetching products</div>;
+  // if (loading) return <div>Loading products...</div>;
+  // if (producterror) return <div>Error fetching products</div>;
   const [modalType, setModalType] = useState(null);
 
   const {
@@ -42,6 +47,14 @@ const Dashboard = () => {
     isError,
     error,
   } = useFetchData("category", getCategories, null, null);
+  const {
+    data: subcategoryData,
+    // isLoading,
+    // refetch,
+    // isFetching,
+    // isError,
+    // error,
+  } = useFetchData("subcategory", getSUbCategories, null, null);
   console.log(categoryData, "categoryDatacategoryDatacategoryDatacategoryData");
   // null | "category" | "subcategory" | "product"
   const [formValues, setFormValues] = useState({
@@ -69,6 +82,8 @@ const Dashboard = () => {
     },
     onSuccess: () => {
       toast.success("Product created successfully!");
+      refetchProduct();
+
       setFormValues({
         title: "",
         description: "",
@@ -84,7 +99,7 @@ const Dashboard = () => {
   });
 
   const handleSubmit = (values) => {
-    console.log(values,"8888888888888888888888888888888888888888888888888")
+    console.log(values, "8888888888888888888888888888888888888888888888888");
     addProductMutation.mutate(values);
   };
 
@@ -122,82 +137,33 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   // Sample categories array (uses `name`, not `category`)
-  const categories = [
-    {
-      id: 1,
-      name: "Electronics",
-      subcategories: ["Phones", "Laptops", "Cameras"],
-    },
-    {
-      id: 2,
-      name: "Clothing",
-      subcategories: ["Men", "Women", "Kids"],
-    },
-    {
-      id: 3,
-      name: "Books",
-      subcategories: ["Fiction", "Non-fiction", "Comics"],
-    },
-  ];
-
-  // Sample products
-  const products = [
-    {
-      id: 1,
-      name: "iPhone 13",
-      category: "Electronics",
-      subcategory: "Phones",
-      price: "$799",
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "MacBook Pro",
-      category: "Electronics",
-      subcategory: "Laptops",
-      price: "$1299",
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 3,
-      name: "Leather Jacket",
-      category: "Clothing",
-      subcategory: "Men",
-      price: "$199",
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 4,
-      name: "Science Fiction Novel",
-      category: "Books",
-      subcategory: "Fiction",
-      price: "$19",
-      image: "https://via.placeholder.com/150",
-    },
-    // …add more as needed
-  ];
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
 
   // (Optional) Example handler—adjust as needed
   const handleCategoryClick = (subcategory) => {
+    if (selectedCategory?._id === subcategory._id) {
+      setSelectedCategory(null);
+      setFilters((prev) => ({
+        ...prev,
+
+        subcategory: "",
+        page: 1,
+      }));
+    } else {
+      setSelectedCategory(subcategory?.name);
+      setFilters((prev) => ({
+        ...prev,
+        subcategory: subcategory?._id,
+
+        page: 1,
+      }));
+    }
     console.log("Clicked subcategory:", subcategory);
     // any additional logic before navigation
   };
 
-  // Filter products by selectedCategory/subcategory
-  const filteredProducts = products.filter((prod) => {
-    if (selectedCategory && selectedSubcategory) {
-      return (
-        prod.category === selectedCategory.name &&
-        prod.subcategory === selectedSubcategory
-      );
-    } else if (selectedCategory) {
-      return prod.category === selectedCategory.name;
-    }
-    return true;
-  });
   const addCategoryMutation = useMutation({
     mutationFn: (values) => addCategory(values),
     onSuccess: () => {
@@ -249,7 +215,7 @@ const Dashboard = () => {
     lineHeight: "100%",
     color: "#3C3C3C",
   };
- 
+
   const [selectedImageIndex, setSelectedImageIndex] = useState(); // ✅ always at top
   return (
     <>
@@ -355,11 +321,19 @@ const Dashboard = () => {
                 fontSize: "16.09px",
                 lineHeight: "100%",
                 letterSpacing: "0%",
-                // background: "#222222",
+                
                 color: "#222222",
-                // color: "#FFFFFF", // ensure text is readable on dark background
-                padding: "8px 12px", // optional padding for better appearance
+                cursor:"pointer",
+             
+                padding: "8px 12px", 
               }}
+              onClick={() =>
+                setFilters((prev) => ({
+                  ...prev,
+                  subcategory: "",
+                  page: 1,
+                }))
+              }
             >
               All categories
             </h4>
@@ -373,6 +347,25 @@ const Dashboard = () => {
                       setSelectedCategory(categoryItem);
                       setSelectedSubcategory(null);
                     }}
+                    // onClick={() => {
+                    //   if (selectedCategory?._id === categoryItem._id) {
+                    //     setSelectedCategory(null);
+                    //     setFilters((prev) => ({
+                    //       ...prev,
+                    //       category: "",
+                    //       subcategory: "",
+                    //       page: 1,
+                    //     }));
+                    //   } else {
+                    //     setSelectedCategory(categoryItem);
+                    //     setFilters((prev) => ({
+                    //       ...prev,
+                    //       category: categoryItem._id,
+                    //       subcategory: "",
+                    //       page: 1,
+                    //     }));
+                    //   }
+                    // }}
                     style={{
                       color: "#222222",
                       fontFamily: "'Poppins', sans-serif",
@@ -434,7 +427,7 @@ const Dashboard = () => {
                             <li
                               key={subIdx}
                               onClick={() => {
-                                handleCategoryClick(subcategory.name); // pass just name or whole object depending on need
+                                handleCategoryClick(subcategory); // pass just name or whole object depending on need
                                 setSelectedSubcategory(subcategory.name);
                               }}
                               style={{
@@ -511,7 +504,7 @@ const Dashboard = () => {
                   <ProductCard product={prod} />
                 </div>
               ))}
-              {filteredProducts?.length === 0 && (
+              {PtoductList?.length === 0 && (
                 <div className="col-12">
                   <p>
                     No products found for the selected category/subcategory.
@@ -812,17 +805,14 @@ const Dashboard = () => {
               initialValues={formValues}
               // validationSchema={ProductValidationSchema}
               // onSubmit={handleSubmit}
-               onSubmit={(values, { resetForm }) => {
-               
+              onSubmit={(values, { resetForm }) => {
                 handleSubmit(values);
                 resetForm();
               }}
               enableReinitialize
-
-             
             >
               {(formik) => (
-               <Form >
+                <Form>
                   <div className="row mb-3">
                     <div className="col-4 d-flex align-items-center">
                       <label
@@ -888,7 +878,7 @@ const Dashboard = () => {
                       </label>
                     </div>
                     <div className="col-8">
-                      {formik.values.variants.map((variant, index) => (
+                      {formik?.values?.variants?.map((variant, index) => (
                         <div
                           key={index}
                           className="d-flex align-items-center gap-5 mb-3"
@@ -1113,7 +1103,7 @@ const Dashboard = () => {
                         }}
                       >
                         <option value="">Select subcategory</option>
-                        {categoryData.map((cat) => (
+                        {subcategoryData?.map((cat) => (
                           <option key={cat?._id} value={cat?._id}>
                             {cat?.name}
                           </option>
@@ -1261,56 +1251,59 @@ const Dashboard = () => {
                         />
 
                         {/* Image Upload Slots */}
-                       {formik.values.images.map((url, idx) => (
-  <div key={idx} style={{ position: "relative" }}>
-    {url ? (
-      <img
-        src={
-          typeof url === "string" && url.startsWith("http")
-            ? url
-            : `http://localhost:5000${url}`
-        }
-        alt={`preview-${idx + 1}`}
-        style={{
-          width: "130px",
-          height: "98px",
-          objectFit: "cover",
-          borderRadius: "12.5px",
-          border: "1px solid #ccc",
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          setSelectedImageIndex(idx);
-          document.getElementById("image-upload-input").click();
-        }}
-      />
-    ) : (
-      <label
-        htmlFor="image-upload-input"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "130px",
-          height: "98px",
-          borderRadius: "12.5px",
-          border: "3px dashed #3C3C3C73",
-          background: "#FFFFFF",
-          color: "#aaa",
-          cursor: "pointer",
-          fontFamily: "Montserrat",
-          fontSize: "14px",
-          textAlign: "center",
-        }}
-        onClick={() => {
-          setSelectedImageIndex(idx);
-        }}
-      >
-        Upload
-      </label>
-    )}
-  </div>
-))}
+                        {formik.values.images.map((url, idx) => (
+                          <div key={idx} style={{ position: "relative" }}>
+                            {url ? (
+                              <img
+                                src={
+                                  typeof url === "string" &&
+                                  url.startsWith("http")
+                                    ? url
+                                    : `http://localhost:5000${url}`
+                                }
+                                alt={`preview-${idx + 1}`}
+                                style={{
+                                  width: "130px",
+                                  height: "98px",
+                                  objectFit: "cover",
+                                  borderRadius: "12.5px",
+                                  border: "1px solid #ccc",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  setSelectedImageIndex(idx);
+                                  document
+                                    .getElementById("image-upload-input")
+                                    .click();
+                                }}
+                              />
+                            ) : (
+                              <label
+                                htmlFor="image-upload-input"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  width: "130px",
+                                  height: "98px",
+                                  borderRadius: "12.5px",
+                                  border: "3px dashed #3C3C3C73",
+                                  background: "#FFFFFF",
+                                  color: "#aaa",
+                                  cursor: "pointer",
+                                  fontFamily: "Montserrat",
+                                  fontSize: "14px",
+                                  textAlign: "center",
+                                }}
+                                onClick={() => {
+                                  setSelectedImageIndex(idx);
+                                }}
+                              >
+                                Upload
+                              </label>
+                            )}
+                          </div>
+                        ))}
 
                         {/* {formik.values.images.length < 5 && (
                           <div style={{ position: "relative" }}>
@@ -1354,7 +1347,7 @@ const Dashboard = () => {
                         }}
                       >
                         <button
-                         type="submit"
+                          type="submit"
                           style={{
                             padding: "10px 16px",
                             borderRadius: "8px",

@@ -1,9 +1,28 @@
-// src/components/Header.jsx
-import React from "react";
-import shoppingIcon from "../assets/img/shopping-cart.png";
 
+import React, { useState,useEffect} from "react";
+import shoppingIcon from "../assets/img/shopping-cart.png";
+import { useProductContext } from "../context/ProductContext"; 
 import heartIcon from "../assets/img/heart.png";
 const Header = () => {
+ const { setFilters } = useProductContext();
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearchClick = () => {
+    setFilters((prev) => ({
+      ...prev,
+      search: searchInput.trim(),
+      page: 1,
+    }));
+  };
+   useEffect(() => {
+    if (searchInput.trim() === "") {
+      setFilters((prev) => ({
+        ...prev,
+        search: "",
+        page: 1,
+      }));
+    }
+  }, [searchInput, setFilters]);
   return (
     <header
       style={{
@@ -17,12 +36,11 @@ const Header = () => {
         boxSizing: "border-box",
       }}
     >
-      {/* Left: Logo or Title */}
+     
       <h1 style={{ color: "#fff", fontSize: "24px", fontWeight: "bold" }}>
         Product Admin
       </h1>
 
-      {/* Center: Search bar with button */}
       <div
         style={{
           position: "relative",
@@ -31,6 +49,8 @@ const Header = () => {
       >
         <input
           type="text"
+           value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Search any things"
           style={{
             width: "100%",
@@ -57,12 +77,13 @@ const Header = () => {
             fontSize: "16px",
             cursor: "pointer",
           }}
+         onClick={handleSearchClick}
         >
           Search
         </button>
       </div>
 
-      {/* Right: Wishlist, Cart, Sign In */}
+    
       <div
         style={{
           display: "flex",
@@ -87,7 +108,7 @@ const Header = () => {
               borderRadius: "394.74px",
               fontSize: "10px",
               color: "#fff",
-              padding: "4px 8px", // Add padding to fit text
+              padding: "4px 8px", 
               gap: "7.89px",
             }}
           >
@@ -120,7 +141,7 @@ const Header = () => {
               borderRadius: "394.74px",
               fontSize: "10px",
               color: "#fff",
-              padding: "4px 8px", // Add padding to fit text
+              padding: "4px 8px", 
               gap: "7.89px",
             }}
           >

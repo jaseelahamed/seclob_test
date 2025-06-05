@@ -19,10 +19,14 @@ export const getCategories = async () => {
     const response = await apiCall("get", URLS.CATEGORIES, null, null, false);
     return response?.data;
 };
+export const getSUbCategories = async () => {
+  const response = await apiCall("get", URLS.SUBCATEGORIES, null, null, false);
+  console.log(response,"qqqqqqqqqqqqqqqqqq")
+    return response?.data;
+};
   
 export const addProduct = async (data) => {
     const response = await apiCall("post", URLS.PRODUCTS, data, null, false);
-    console.log(response,"responseresponseresponseresponsefffffffffffffffffffffffffffffffffffffffffffff")
     return response?.data;
 };
   

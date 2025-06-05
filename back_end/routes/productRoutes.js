@@ -8,5 +8,5 @@ const productController = require("../controllers/productController");
 
 router.get("/", productController.getProducts);
 router.post("/", ...validate, productController.createProduct);
-
+router.get("/:id", productController.getProductById);
 module.exports = router;

@@ -1,9 +1,14 @@
 import React from "react";
 import Frame26Icon from "../assets/img/Frame 26.png";
 import Frame28Icon from "../assets/img/Frame 28.png";
-
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "../constants/paths"; 
 const ProductCard = ({ product }) => {
-  console.log(product, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+ const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`${PATHS.PRODUCTSDETAILS}/${product._id}`); 
+  };
   return (
     <div
       className="card"
@@ -16,13 +21,15 @@ const ProductCard = ({ product }) => {
         flexDirection: "column",
         overflow: "hidden",
       }}
+        onClick={handleClick}
     >
       <div style={{ position: "relative" }}>
         <img
-          src={
-            product.image ||
-            "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA1gMBIgACEQEDEQH/xAAcAAACAgMBAQAAAAAAAAAAAAAEBQMGAAECBwj/xAA+EAACAQMDAgQEBQIGAgIDAAABAgMABBEFEiExQRMiUWEGcYGRFCMyocHR8DNCUrHh8WJyQ5IlNFPxgg//xAAZAQACAwEAAAAAAAAAAAAAAAACAwABBAX/xAAxEQACAQIEBAMFBwUAAAAAAAABAhEAAyExBBJBUWFxIoGhscETMuHxBxVSYnKC/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf"
-          }
+          // src={
+          //   product.image ||
+          //   "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQA1gMBIgACEQEDEQH/xAAcAAACAgMBAQAAAAAAAAAAAAAEBQMGAAECBwj/xAA+EAACAQMDAgQEBQIGAgIDAAABAgMABBEFEiExQRMiUWEGcYGRFCMyocHR8DNCUrHh8WJyQ5IlNFPxgg//xAAZAQACAwEAAAAAAAAAAAAAAAACAwABBAX/xAAxEQACAQIEBAMFBwUAAAAAAAABAhEAAyExBBJBUWFxIoGhscETMuHxBxVSYnKC/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEBAQAAAAAAAAAAAAAAAAAAAAf"
+          // }
+          src={`http://localhost:5000${product.images[0]}`}
           alt={product.name}
           style={{
             width: "282.28px",
@@ -34,10 +41,9 @@ const ProductCard = ({ product }) => {
             display: "block",
           }}
         />
-        {/* Frame28Icon at top-right corner */}
-        {product.badge && (
+       
           <img
-            src={Frame28Icon} // Make sure this is imported
+            src={Frame28Icon} 
             alt="badge"
             style={{
               position: "absolute",
@@ -47,7 +53,7 @@ const ProductCard = ({ product }) => {
               height: "24px",
             }}
           />
-        )}
+       
       </div>
 
       <div

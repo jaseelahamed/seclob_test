@@ -31,7 +31,7 @@ exports.createProduct = async (req, res) => {
 exports.validate = [
   body("title").notEmpty().withMessage("Title is required"),
   body("description").notEmpty().withMessage("Description is required"),
-  body("category").isMongoId().withMessage("Invalid category ID"),
+
   body("subcategory").isMongoId().withMessage("Invalid subcategory ID"),
   body("variants")
     .isArray()
@@ -77,6 +77,29 @@ exports.getProducts = async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
+
+exports.getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id).populate("subcategory", "name");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
     res.status(500).send("Server error");
   }
 };
