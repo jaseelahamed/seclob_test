@@ -5,6 +5,7 @@ import { getProductById } from "../../services/productapiCall";
 import Frame28Icon from "../../assets/img/Frame 28.png";
 import { useWishlist } from "../../hooks/useWishlist";
 import { toast } from "react-hot-toast";
+import { Base_Url } from "../../services/base_url";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const ProductDetails = () => {
 
   React.useEffect(() => {
     if (product?.images?.length > 0) {
-      setMainImage(`http://localhost:5000${product.images[0]}`);
+      setMainImage(`${Base_Url}${product.images[0]}`);
     }
   }, [product]);
 
@@ -96,7 +97,7 @@ const ProductDetails = () => {
             {product?.images?.slice(0, 3).map((img, index) => (
               <img
                 key={index}
-                src={`http://localhost:5000${img}`}
+                src={`${Base_Url}${img}`}
                 alt={`Sub${index + 1}`}
                 className="img-thumbnail"
                 style={{
@@ -105,11 +106,11 @@ const ProductDetails = () => {
                   objectFit: "cover",
                   cursor: "pointer",
                   border:
-                    mainImage === `http://localhost:5000${img}`
+                    mainImage === `${Base_Url}${img}`
                       ? "2px solid blue"
                       : "1px solid #ddd",
                 }}
-                onClick={() => setMainImage(`http://localhost:5000${img}`)}
+                onClick={() => setMainImage(`${Base_Url}${img}`)}
               />
             ))}
           </div>
