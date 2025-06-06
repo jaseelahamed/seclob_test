@@ -54,7 +54,7 @@ const Dashboard = () => {
   const {
     data: subcategoryData,
     // isLoading,
-    // refetch,
+    refetch:subcategoryRefetch,
     // isFetching,
     // isError,
     // error,
@@ -104,15 +104,6 @@ const Dashboard = () => {
     addProductMutation.mutate(values);
   };
 
-  const handleAddVariant = () => {
-    setFormValues((prev) => ({
-      ...prev,
-      variants: [
-        ...prev.variants,
-        { ram: "", storage: "", price: "", qty: "" },
-      ],
-    }));
-  };
 
   const handleClose = () => {
     setModalType(null);
@@ -168,6 +159,7 @@ const Dashboard = () => {
     onSuccess: () => {
       toast.success("Category added successfully");
       refetch();
+      subcategoryRefetch()
       handleClose();
     },
     onError: (error) => {

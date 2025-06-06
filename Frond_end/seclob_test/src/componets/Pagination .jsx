@@ -28,16 +28,22 @@ const Pagination = () => {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "12px 24px",
-      borderTop: "1px solid #ccc",
-      fontFamily: "'Poppins', sans-serif",
-      fontSize: "14px"
-    }}>
-    
+ <div style={{
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: "12px 24px",
+  borderTop: "1px solid #ccc",
+  backgroundColor: "#fff", 
+  fontFamily: "'Poppins', sans-serif",
+  fontSize: "14px",
+  zIndex: 1000 
+}}>
+
       <div>
         {`Showing ${startItem} to ${endItem} of ${total} items`}
       </div>
