@@ -96,7 +96,7 @@ const Register = () => {
                 }}
                   onClick={() => navigate(PATHS.LOGIN)}
               >
-                SIGN UP
+                SIGN IN
               </button>
             </div>
           </div>
@@ -368,7 +368,7 @@ const Register = () => {
                       }}
                        
                     >
-                      SIGN IN
+                      SIGN UP
                     </button>
                   </div>
                 </Form>
