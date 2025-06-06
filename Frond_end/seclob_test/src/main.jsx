@@ -26,6 +26,7 @@ import { Toaster } from "react-hot-toast";
 import PublicRoute from "./utils/PublicRoute";
 import { ProductProvider } from "./context/ProductContext";
 import ProductDetails from "./pages/Products/Productdetails";
+
 const router = createBrowserRouter([
   {
     path: PATHS.LOGIN,
