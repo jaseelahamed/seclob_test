@@ -94,6 +94,7 @@ const Register = () => {
                   fontSize: "18px",
                   border: "2px solid #FFFFFF", // white border
                 }}
+                  onClick={() => navigate(PATHS.LOGIN)}
               >
                 SIGN IN
               </button>
@@ -365,7 +366,7 @@ const Register = () => {
                         border: "none",
 
                       }}
-                       onClick={() => navigate(PATHS.LOGIN)}  
+                       
                     >
                       SIGN IN
                     </button>
