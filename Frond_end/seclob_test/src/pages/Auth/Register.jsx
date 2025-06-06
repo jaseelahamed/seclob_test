@@ -95,7 +95,7 @@ const Register = () => {
                   border: "2px solid #FFFFFF", // white border
                 }}
               >
-                SIGN UP
+                SIGN IN
               </button>
             </div>
           </div>
@@ -365,9 +365,9 @@ const Register = () => {
                         border: "none",
 
                       }}
-                      
+                       onClick={() => navigate(PATHS.LOGIN)}  
                     >
-                      SIGN UP
+                      SIGN IN
                     </button>
                   </div>
                 </Form>
