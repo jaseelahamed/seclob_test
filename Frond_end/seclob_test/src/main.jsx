@@ -25,7 +25,8 @@ import "@fontsource/montserrat/700.css";
 import { Toaster } from "react-hot-toast";
 import PublicRoute from "./utils/PublicRoute";
 import { ProductProvider } from "./context/ProductContext";
-import ProductDetails from "./pages/Products/Productdetails";
+// import ProductDetails from "./pages/Products/ProductDetails";
+import SingleProduct from "./pages/Products/SingleProduct";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: `${PATHS.PRODUCTSDETAILS}/:id`,
-        element: <ProtectedRoute component={ProductDetails} />,
+        element: <ProtectedRoute component={SingleProduct} />,
       },
 
       {
