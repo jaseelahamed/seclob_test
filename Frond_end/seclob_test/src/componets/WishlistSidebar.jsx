@@ -1,6 +1,7 @@
 import React from "react";
 import { useWishlist } from "../hooks/useWishlist";
 import Frame28Icon from "../assets/img/Frame 28.png";
+import { Base_Url } from "../services/base_url";
 const WishlistSidebar = ({ show, onClose }) => {
   const { wishlist } = useWishlist();
 console.log(wishlist,"wishlistwishlistwishlist")
@@ -101,7 +102,7 @@ console.log(wishlist,"wishlistwishlistwishlist")
               }}
             >
                   <img
-                       src={`http://localhost:5000${product.images[0]}`}
+                       src={`${Base_Url}${product.images[0]}`}
             
                 alt={product.title}
                 style={{

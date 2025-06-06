@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 app.use(express.json());
 app.use(cors()); 
 
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 
@@ -18,7 +19,7 @@ app.use("/api/subcategories", require("./routes/subCategoryRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/upload", require("./controllers/uploadController"));
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 const PORT = process.env.PORT || 5000;
 // Function to create default admin
 const createDefaultAdmin = async () => {

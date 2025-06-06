@@ -30,6 +30,7 @@ import AdminHeader from "./AdminHeader";
 import CategoryFilter from "./CategoryFilter";
 import CategoryFormModal from "./CategoryFormModal";
 import SubCategoryFormModal from "./SubCategoryFormModal";
+import { Base_Url } from "../../services/base_url";
 const Dashboard = () => {
   const {
     products: PtoductList,
@@ -708,7 +709,7 @@ const Dashboard = () => {
                                     typeof url === "string" &&
                                     url.startsWith("http")
                                       ? url
-                                      : `http://localhost:5000${url}`
+                                      : `${Base_Url}${url}`
                                   }
                                   alt={`preview-${idx + 1}`}
                                   style={{

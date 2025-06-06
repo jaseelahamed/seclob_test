@@ -1,1 +1,2 @@
-export const Base_Url = "http://localhost:5000/api"; // Change this to your deployed URL later
+export const Base_Url = "https://seclob-test.onrender.com/api"; // Change this to your deployed URL later
+// export const Base_Url = "http://localhost:5000/api"; // Change this to your deployed URL later
